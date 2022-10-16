@@ -1,0 +1,39 @@
+package normal.first.springdata.course;
+
+import normal.first.springdata.topic.Topic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+public class courseController {
+
+    @Autowired
+    private courseService courseService;
+    @RequestMapping("/topics/{id}/courses")
+    public List<course> getAllcourses(@PathVariable String id){
+
+        return courseService.getAllcourses(id, "topicId");
+    }
+    @RequestMapping("/topics/{topicId}/courses/{id}")
+    public Optional<course> getcourses(@PathVariable String id){
+        return courseService.getcourses(id);
+    }
+    @RequestMapping(method= RequestMethod.POST ,value ="/topics/{topicId}/courses/")
+    public void addcourses(@RequestBody course course,@PathVariable String topicId){
+        course.setTopic(new Topic(topicId,"",""));;
+        courseService.addcourses(course);
+    }
+    @RequestMapping(method= RequestMethod.PUT ,value ="/topics/{topicId}/courses/{id}")
+    public void updatecourses(@RequestBody course course, @PathVariable String topicId){
+        course.setTopic(new Topic(topicId,"",""));
+        courseService.updatecourses( course);
+    }
+    @RequestMapping(method= RequestMethod.DELETE,value = "/topics/{topicId}/courses/{id}")
+    public void deletecourses(@PathVariable String id){
+         courseService.deletecourses(id);
+    }
+
+}
