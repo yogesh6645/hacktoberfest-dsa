@@ -1,0 +1,42 @@
+package normal.first.springdata.course;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class courseService {
+
+
+    @Autowired
+    private courseRepository courseRepository;
+
+    public List<course> getAllcourses(String id, String topicId) {
+        //      return topics;
+        List<course> courses = new ArrayList<>();
+        courseRepository.findByTopicId(topicId)
+                .forEach(courses::add);
+        return courses;
+    }
+
+    public Optional<course> getcourses(String id) {
+//         return topics.stream().filter(t ->t.getId().equals(id)).findFirst().get();
+
+        return courseRepository.findById(id);
+
+    }
+
+    public void addcourses(course course) {
+        courseRepository.save(course);
+    }
+
+    public void updatecourses( course course) {
+        courseRepository.save(course);
+    }
+    public void deletecourses(String id) {
+         courseRepository.deleteById(id);
+    }
+}
